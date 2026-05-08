@@ -1,0 +1,232 @@
+@startuml Diagrama de Classes - Gestió Bancària
+
+skinparam classAttributeIconSize 0
+skinparam classFontSize 12
+skinparam classHeaderBackgroundColor #E8EAF6
+skinparam classBorderColor #3F51B5
+skinparam arrowColor #3F51B5
+skinparam stereotypeCBackgroundColor #C5CAE9
+
+title Diagrama de Classes - Aplicació de Gestió Bancària
+
+' ============================
+' CLASSES ABSTRACTES
+' ============================
+
+abstract class Persona {
+    - dni: String
+    - nom: String
+    - adreca: String
+    - telefon: String
+    + Persona(dni: String, nom: String, adreca: String, telefon: String)
+    + getDni(): String
+    + setDni(dni: String): void
+    + getNom(): String
+    + setNom(nom: String): void
+    + getAdreca(): String
+    + setAdreca(adreca: String): void
+    + getTelefon(): String
+    + setTelefon(telefon: String): void
+}
+
+abstract class Producte {
+    + Producte()
+}
+
+abstract class Compte {
+    - numeroCompte: String
+    - dataObertura: LocalDate
+    - saldo: double
+    - tipusInteres: double
+    - clients: List<Client>
+    + Compte(numeroCompte: String, dataObertura: LocalDate, saldo: double, tipusInteres: double)
+    + getNumeroCompte(): String
+    + setNumeroCompte(numeroCompte: String): void
+    + getDataObertura(): LocalDate
+    + setDataObertura(dataObertura: LocalDate): void
+    + getSaldo(): double
+    + setSaldo(saldo: double): void
+    + getTipusInteres(): double
+    + setTipusInteres(tipusInteres: double): void
+    + getClients(): List<Client>
+    + setClients(clients: List<Client>): void
+    + afegirClient(client: Client): void
+    + eliminarClient(client: Client): void
+    + ingressar(quantitat: double): void
+    + retirar(quantitat: double): void
+    + consultarSaldo(): double
+}
+
+' ============================
+' CLASSES CONCRETES
+' ============================
+
+class Client {
+    - comptes: List<Compte>
+    + Client(dni: String, nom: String, adreca: String, telefon: String)
+    + getComptes(): List<Compte>
+    + setComptes(comptes: List<Compte>): void
+    + afegirCompte(compte: Compte): void
+    + eliminarCompte(compte: Compte): void
+}
+
+class Empleat {
+    - sucursal: Sucursal
+    + Empleat(dni: String, nom: String, adreca: String, telefon: String, sucursal: Sucursal)
+    + getSucursal(): Sucursal
+    + setSucursal(sucursal: Sucursal): void
+}
+
+class Sucursal {
+    - identificador: String
+    - adreca: String
+    - empleats: List<Empleat>
+    + Sucursal(identificador: String, adreca: String)
+    + getIdentificador(): String
+    + setIdentificador(identificador: String): void
+    + getAdreca(): String
+    + setAdreca(adreca: String): void
+    + getEmpleats(): List<Empleat>
+    + setEmpleats(empleats: List<Empleat>): void
+    + afegirEmpleat(empleat: Empleat): void
+    + eliminarEmpleat(empleat: Empleat): void
+}
+
+class CompteCorrent {
+    - targetes: List<TargetaCredit>
+    - fonsInversio: List<FonsInversio>
+    - carteres: List<CarteraValors>
+    + CompteCorrent(numeroCompte: String, dataObertura: LocalDate, saldo: double, tipusInteres: double)
+    + getTargetes(): List<TargetaCredit>
+    + setTargetes(targetes: List<TargetaCredit>): void
+    + getFonsInversio(): List<FonsInversio>
+    + setFonsInversio(fonsInversio: List<FonsInversio>): void
+    + getCarteres(): List<CarteraValors>
+    + setCarteres(carteres: List<CarteraValors>): void
+    + afegirTargeta(targeta: TargetaCredit): void
+    + eliminarTargeta(targeta: TargetaCredit): void
+    + afegirFons(fons: FonsInversio): void
+    + eliminarFons(fons: FonsInversio): void
+    + afegirCartera(cartera: CarteraValors): void
+    + eliminarCartera(cartera: CarteraValors): void
+}
+
+class CompteTermini {
+    - nombreMesos: int
+    + CompteTermini(numeroCompte: String, dataObertura: LocalDate, saldo: double, tipusInteres: double, nombreMesos: int)
+    + getNombreMesos(): int
+    + setNombreMesos(nombreMesos: int): void
+    + calcularInteressos(): double
+}
+
+class TargetaCredit {
+    - tipus: String
+    - numero: String
+    - titular: String
+    - dataCaducitat: LocalDate
+    + TargetaCredit(tipus: String, numero: String, titular: String, dataCaducitat: LocalDate)
+    + getTipus(): String
+    + setTipus(tipus: String): void
+    + getNumero(): String
+    + setNumero(numero: String): void
+    + getTitular(): String
+    + setTitular(titular: String): void
+    + getDataCaducitat(): LocalDate
+    + setDataCaducitat(dataCaducitat: LocalDate): void
+}
+
+class FonsInversio {
+    - nom: String
+    - importFons: double
+    - rendibilitat: double
+    - dataObertura: LocalDate
+    - dataVenciment: LocalDate
+    + FonsInversio(nom: String, importFons: double, rendibilitat: double, dataObertura: LocalDate, dataVenciment: LocalDate)
+    + getNom(): String
+    + setNom(nom: String): void
+    + getImportFons(): double
+    + setImportFons(importFons: double): void
+    + getRendibilitat(): double
+    + setRendibilitat(rendibilitat: double): void
+    + getDataObertura(): LocalDate
+    + setDataObertura(dataObertura: LocalDate): void
+    + getDataVenciment(): LocalDate
+    + setDataVenciment(dataVenciment: LocalDate): void
+}
+
+class CarteraValors {
+    - valors: List<Valor>
+    + CarteraValors()
+    + getValors(): List<Valor>
+    + setValors(valors: List<Valor>): void
+    + afegirValor(valor: Valor): void
+    + eliminarValor(valor: Valor): void
+    + valorTotal(): double
+}
+
+class Valor {
+    - nom: String
+    - nombreTitols: int
+    - preuCotitzacio: double
+    + Valor(nom: String, nombreTitols: int, preuCotitzacio: double)
+    + getNom(): String
+    + setNom(nom: String): void
+    + getNombreTitols(): int
+    + setNombreTitols(nombreTitols: int): void
+    + getPreuCotitzacio(): double
+    + setPreuCotitzacio(preuCotitzacio: double): void
+}
+
+class Banc {
+    - nom: String
+    - sucursals: List<Sucursal>
+    - clients: List<Client>
+    + Banc(nom: String)
+    + getNom(): String
+    + setNom(nom: String): void
+    + getSucursals(): List<Sucursal>
+    + setSucursals(sucursals: List<Sucursal>): void
+    + getClients(): List<Client>
+    + setClients(clients: List<Client>): void
+    + afegirSucursal(sucursal: Sucursal): void
+    + eliminarSucursal(sucursal: Sucursal): void
+    + afegirClient(client: Client): void
+    + eliminarClient(client: Client): void
+    + cercarClient(dni: String): Client
+}
+
+' ============================
+' RELACIONS D'HERÈNCIA
+' ============================
+
+Persona <|-- Client
+Persona <|-- Empleat
+Producte <|-- Compte
+Producte <|-- FonsInversio
+Producte <|-- CarteraValors
+Compte <|-- CompteCorrent
+Compte <|-- CompteTermini
+
+' ============================
+' RELACIONS D'AGREGACIÓ
+' ============================
+
+Banc "1" o-- "1..*" Sucursal : conté >
+Sucursal "1" o-- "1..*" Empleat : treballen >
+CompteCorrent "1" o-- "0..*" TargetaCredit : té >
+CompteCorrent "1" o-- "0..*" FonsInversio : té >
+CompteCorrent "1" o-- "0..*" CarteraValors : té >
+
+' ============================
+' RELACIÓ DE COMPOSICIÓ
+' ============================
+
+CarteraValors "1" *-- "1..*" Valor : composta per >
+
+' ============================
+' RELACIÓ D'ASSOCIACIÓ
+' ============================
+
+Client "1..*" -- "1..*" Compte : titular de >
+
+@enduml

@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>Pràctica DOO - Gestió Bancària - Part 1</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;margin:40px 60px;color:#222;line-height:1.6}
+h1{color:#1a237e;border-bottom:3px solid #1a237e;padding-bottom:10px}
+h2{color:#283593;margin-top:30px;border-bottom:1px solid #ccc;padding-bottom:5px}
+h3{color:#3949ab}
+table{border-collapse:collapse;width:100%;margin:15px 0}
+th,td{border:1px solid #ccc;padding:8px 12px;text-align:left}
+th{background:#e8eaf6;color:#1a237e}
+tr:nth-child(even){background:#f5f5f5}
+code{background:#f0f0f0;padding:2px 6px;border-radius:3px;font-size:0.9em}
+pre{background:#263238;color:#eeffff;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.85em}
+.cover{text-align:center;padding:80px 0;page-break-after:always}
+.cover h1{font-size:2.5em;border:none;color:#1a237e}
+.cover p{font-size:1.2em;color:#555}
+.page-break{page-break-before:always}
+img{max-width:100%;border:1px solid #ddd;border-radius:4px}
+@media print{body{margin:20px 30px}pre{font-size:0.75em}}
+</style>
+</head>
+<body>
+
+<div class="cover">
+<h1>🏦 Aplicació de Gestió Bancària</h1>
+<p><strong>Pràctica de Disseny Orientat a Objectes (DOO)</strong></p>
+<p>Mòdul 5 - Entorns de Desenvolupament</p>
+<p>Curs 2025-2026</p>
+<p style="margin-top:40px"><strong>Autor:</strong> Alumne</p>
+<p><strong>Data:</strong> Maig 2026</p>
+</div>
+
+<h1>Índex</h1>
+<ol>
+<li>Anàlisi gramatical (Mètode Booch)</li>
+<li>Justificació de classes i relacions</li>
+<li>Codi Java amb JavaDoc (Part 2)</li>
+<li>Diagrames UML (Part 2)</li>
+<li>Patrons de disseny (Part 3)</li>
+<li>Documentació JavaDoc generada (Part 3)</li>
+</ol>
+
+<div class="page-break"></div>
+<h1>1. Anàlisi Gramatical - Mètode Booch</h1>
+
+<h2>1.1 Classificació de paraules clau</h2>
+<p>S'ha aplicat el mètode de Grady Booch sobre l'enunciat original, classificant les paraules clau en:</p>
+<ul>
+<li><strong>Noms comuns → Classes</strong> (Banc, Client, Compte, Sucursal...)</li>
+<li><strong>Verbs d'acció → Mètodes</strong> (gestionar, ingressar, retirar...)</li>
+<li><strong>Verbs d'existència → Herència</strong> ("hi ha dos tipus de comptes")</li>
+<li><strong>Verbs de possessió → Composició/Agregació</strong> ("tenen", "poden tenir", "estan compostes")</li>
+<li><strong>Adjectius/Noms descriptius → Atributs</strong> (DNI, nom, saldo, número...)</li>
+</ul>
+
+<h2>1.2 Classes candidates identificades</h2>
+<table>
+<tr><th>#</th><th>Classe</th><th>Tipus</th><th>Justificació</th></tr>
+<tr><td>1</td><td><code>Persona</code></td><td>Abstracta</td><td>Agrupa atributs comuns de Client i Empleat</td></tr>
+<tr><td>2</td><td><code>Client</code></td><td>Concreta</td><td>Persona que contracta productes bancaris</td></tr>
+<tr><td>3</td><td><code>Empleat</code></td><td>Concreta</td><td>Persona que treballa en una sucursal</td></tr>
+<tr><td>4</td><td><code>Sucursal</code></td><td>Concreta</td><td>Oficina bancària amb empleats</td></tr>
+<tr><td>5</td><td><code>Producte</code></td><td>Abstracta</td><td>Generalització de tots els productes bancaris</td></tr>
+<tr><td>6</td><td><code>Compte</code></td><td>Abstracta</td><td>Producte amb saldo i operacions</td></tr>
+<tr><td>7</td><td><code>CompteCorrent</code></td><td>Concreta</td><td>Compte amb targetes i productes associats</td></tr>
+<tr><td>8</td><td><code>CompteTermini</code></td><td>Concreta</td><td>Compte amb durada fixada en mesos</td></tr>
+<tr><td>9</td><td><code>TargetaCredit</code></td><td>Concreta</td><td>Targeta associada a comptes corrents</td></tr>
+<tr><td>10</td><td><code>FonsInversio</code></td><td>Concreta</td><td>Producte d'inversió amb rendibilitat</td></tr>
+<tr><td>11</td><td><code>CarteraValors</code></td><td>Concreta</td><td>Producte compost per valors borsaris</td></tr>
+<tr><td>12</td><td><code>Valor</code></td><td>Concreta</td><td>Títol borsari dins una cartera</td></tr>
+<tr><td>13</td><td><code>Banc</code></td><td>Concreta</td><td>Entitat principal del sistema</td></tr>
+</table>
+
+<h2>1.3 Atributs per classe</h2>
+<table>
+<tr><th>Classe</th><th>Atributs</th></tr>
+<tr><td>Persona</td><td>dni, nom, adreca, telefon</td></tr>
+<tr><td>Client</td><td><em>(hereta Persona)</em> + comptes: List&lt;Compte&gt;</td></tr>
+<tr><td>Empleat</td><td><em>(hereta Persona)</em> + sucursal: Sucursal</td></tr>
+<tr><td>Sucursal</td><td>identificador, adreca, empleats: List&lt;Empleat&gt;</td></tr>
+<tr><td>Compte</td><td>numeroCompte, dataObertura, saldo, tipusInteres, clients: List&lt;Client&gt;</td></tr>
+<tr><td>CompteCorrent</td><td><em>(hereta Compte)</em> + targetes, fonsInversio, carteres</td></tr>
+<tr><td>CompteTermini</td><td><em>(hereta Compte)</em> + nombreMesos: int</td></tr>
+<tr><td>TargetaCredit</td><td>tipus, numero, titular, dataCaducitat</td></tr>
+<tr><td>FonsInversio</td><td>nom, importFons, rendibilitat, dataObertura, dataVenciment</td></tr>
+<tr><td>CarteraValors</td><td>valors: List&lt;Valor&gt;</td></tr>
+<tr><td>Valor</td><td>nom, nombreTitols, preuCotitzacio</td></tr>
+<tr><td>Banc</td><td>nom, sucursals: List&lt;Sucursal&gt;, clients: List&lt;Client&gt;</td></tr>
+</table>
+
+<h2>1.4 Mètodes principals</h2>
+<table>
+<tr><th>Classe</th><th>Mètodes</th></tr>
+<tr><td>Compte</td><td>ingressar(double), retirar(double), consultarSaldo()</td></tr>
+<tr><td>CompteCorrent</td><td>afegirTargeta(), afegirFons(), afegirCartera()</td></tr>
+<tr><td>CompteTermini</td><td>calcularInteressos()</td></tr>
+<tr><td>CarteraValors</td><td>afegirValor(), eliminarValor(), valorTotal()</td></tr>
+<tr><td>Banc</td><td>afegirSucursal(), cercarClient(), afegirClient()</td></tr>
+<tr><td>Sucursal</td><td>afegirEmpleat(), eliminarEmpleat()</td></tr>
+<tr><td>Client</td><td>afegirCompte(), eliminarCompte()</td></tr>
+</table>
+
+<div class="page-break"></div>
+<h1>2. Justificació de Classes i Relacions</h1>
+
+<h2>2.1 Relacions d'Herència</h2>
+<table>
+<tr><th>Relació</th><th>Justificació</th></tr>
+<tr><td>Persona → Client, Empleat</td><td>Comparteixen DNI, nom, adreça, telèfon. Factorització en superclasse abstracta (DRY).</td></tr>
+<tr><td>Producte → Compte, FonsInversio, CarteraValors</td><td>"Productes associats als clients" - generalització abstracta.</td></tr>
+<tr><td>Compte → CompteCorrent, CompteTermini</td><td>"Hi ha dos tipus de comptes" - comparteixen atributs però difereixen en funcionalitat.</td></tr>
+</table>
+
+<h2>2.2 Relacions d'Agregació</h2>
+<table>
+<tr><th>Relació</th><th>Cardinalitat</th><th>Justificació</th></tr>
+<tr><td>Banc ◇— Sucursal</td><td>1 a 1..*</td><td>El banc té sucursals, però existeixen independentment.</td></tr>
+<tr><td>Sucursal ◇— Empleat</td><td>1 a 1..*</td><td>L'empleat pot ser traslladat a una altra sucursal.</td></tr>
+<tr><td>CompteCorrent ◇— TargetaCredit</td><td>1 a 0..*</td><td>La targeta existeix independentment del compte.</td></tr>
+<tr><td>CompteCorrent ◇— FonsInversio</td><td>1 a 0..*</td><td>Producte independent associat al compte.</td></tr>
+<tr><td>CompteCorrent ◇— CarteraValors</td><td>1 a 0..*</td><td>Producte independent associat al compte.</td></tr>
+</table>
+
+<h2>2.3 Relació de Composició</h2>
+<table>
+<tr><th>Relació</th><th>Cardinalitat</th><th>Justificació</th></tr>
+<tr><td>CarteraValors ◆— Valor</td><td>1 a 1..*</td><td>"Estan <strong>compostes</strong> per valors" - cicle de vida dependent.</td></tr>
+</table>
+
+<h2>2.4 Relació d'Associació</h2>
+<table>
+<tr><th>Relació</th><th>Cardinalitat</th><th>Justificació</th></tr>
+<tr><td>Client — Compte</td><td>1..* a 1..*</td><td>Un client pot tenir múltiples comptes i un compte múltiples titulars.</td></tr>
+</table>
+
+<h2>2.5 Relacions que NO apareixen</h2>
+<ul>
+<li><strong>Dependència:</strong> No hi ha cap ús puntual/temporal d'una classe per una altra sense mantenir referència.</li>
+<li><strong>Interfície:</strong> L'enunciat no descriu contractes abstractes que diferents jerarquies hagin de complir.</li>
+</ul>
+
+</body>
+</html>

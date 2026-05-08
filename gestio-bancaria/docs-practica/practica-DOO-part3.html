@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>Pràctica DOO - Gestió Bancària - Part 3</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;margin:40px 60px;color:#222;line-height:1.6}
+h1{color:#1a237e;border-bottom:3px solid #1a237e;padding-bottom:10px}
+h2{color:#283593;margin-top:30px;border-bottom:1px solid #ccc;padding-bottom:5px}
+h3{color:#3949ab}
+code{background:#f0f0f0;padding:2px 6px;border-radius:3px;font-size:0.9em}
+pre{background:#263238;color:#eeffff;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.82em;line-height:1.4}
+table{border-collapse:collapse;width:100%;margin:15px 0}
+th,td{border:1px solid #ccc;padding:8px 12px;text-align:left}
+th{background:#e8eaf6;color:#1a237e}
+tr:nth-child(even){background:#f5f5f5}
+.page-break{page-break-before:always}
+.keyword{color:#c792ea}.type{color:#ffcb6b}.comment{color:#546e7a}
+@media print{body{margin:20px 30px}pre{font-size:0.7em}}
+</style>
+</head>
+<body>
+
+<h1>5. Patrons de Disseny</h1>
+
+<h2>5.1 Què són els patrons de disseny?</h2>
+<p>Els <strong>patrons de disseny</strong> són solucions generals i reutilitzables a problemes comuns en el disseny de programari orientat a objectes. Van ser popularitzats pel llibre <em>"Design Patterns: Elements of Reusable Object-Oriented Software"</em> (1994), escrit pel <strong>Gang of Four (GoF)</strong>: Gamma, Helm, Johnson i Vlissides. Cataloguen 23 patrons en tres categories: <strong>creacionals</strong>, <strong>estructurals</strong> i <strong>de comportament</strong>.</p>
+
+<h2>5.2 Objectiu</h2>
+<ul>
+<li>Proporcionar solucions reutilitzables a problemes recurrents</li>
+<li>Establir un vocabulari comú entre desenvolupadors</li>
+<li>Encapsular l'experiència de desenvolupadors experts</li>
+<li>Promoure dissenys flexibles i mantenibles</li>
+</ul>
+
+<h2>5.3 Avantatges i Inconvenients</h2>
+<table>
+<tr><th>Avantatges</th><th>Inconvenients</th></tr>
+<tr><td>Reutilització de solucions provades</td><td>Complexitat afegida en projectes petits</td></tr>
+<tr><td>Millor mantenibilitat del codi</td><td>Corba d'aprenentatge elevada</td></tr>
+<tr><td>Comunicació eficient entre l'equip</td><td>Risc de sobreenginyeria</td></tr>
+<tr><td>Bones pràctiques demostrades</td><td>Rigidesa prematura del disseny</td></tr>
+</table>
+
+<h2>5.4 Patrons més usats actualment</h2>
+<table>
+<tr><th>Patró</th><th>Categoria</th><th>Descripció</th><th>Exemple real</th></tr>
+<tr><td><strong>Singleton</strong></td><td>Creacional</td><td>Una única instància global</td><td>Logger, pool de connexions BD</td></tr>
+<tr><td><strong>Factory Method</strong></td><td>Creacional</td><td>Delega la creació a subclasses</td><td>Calendar.getInstance()</td></tr>
+<tr><td><strong>Abstract Factory</strong></td><td>Creacional</td><td>Famílies d'objectes relacionats</td><td>Toolkits gràfics (Swing, GTK)</td></tr>
+<tr><td><strong>Builder</strong></td><td>Creacional</td><td>Construcció d'objectes complexos</td><td>StringBuilder, HTTP Request</td></tr>
+<tr><td><strong>Observer</strong></td><td>Comportament</td><td>Notificació automàtica de canvis</td><td>Event listeners en GUI</td></tr>
+<tr><td><strong>Strategy</strong></td><td>Comportament</td><td>Algorismes intercanviables</td><td>Algorismes d'ordenació</td></tr>
+<tr><td><strong>Decorator</strong></td><td>Estructural</td><td>Afegeix funcionalitat dinàmica</td><td>BufferedInputStream</td></tr>
+<tr><td><strong>Adapter</strong></td><td>Estructural</td><td>Adapta interfícies incompatibles</td><td>Arrays.asList()</td></tr>
+<tr><td><strong>MVC</strong></td><td>Arquitectònic</td><td>Separa Model-Vista-Controlador</td><td>Spring MVC, Django</td></tr>
+<tr><td><strong>Repository</strong></td><td>Arquitectònic</td><td>Encapsula accés a dades</td><td>Spring Data JPA</td></tr>
+<tr><td><strong>Dependency Injection</strong></td><td>Arquitectònic</td><td>Injecció externa de dependències</td><td>Spring Framework</td></tr>
+</table>
+
+<h2>5.5 Aplicació al projecte bancari</h2>
+<table>
+<tr><th>Patró</th><th>On s'aplicaria</th><th>Benefici</th></tr>
+<tr><td>Singleton</td><td><code>Banc</code></td><td>Garantir una única instància del banc</td></tr>
+<tr><td>Factory Method</td><td>Creació de <code>Producte</code></td><td>Centralitzar la creació de productes</td></tr>
+<tr><td>Strategy</td><td>Càlcul d'interessos</td><td>Intercanviar algorismes dinàmicament</td></tr>
+<tr><td>Observer</td><td>Moviments de <code>Compte</code></td><td>Notificar canvis automàticament</td></tr>
+</table>
+
+<h3>Exemple: Singleton per a Banc</h3>
+<pre><span class="keyword">public class</span> <span class="type">Banc</span> {
+    <span class="keyword">private static</span> Banc instancia;
+    
+    <span class="keyword">private</span> Banc(String nom) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.sucursals = <span class="keyword">new</span> ArrayList&lt;&gt;();
+    }
+    
+    <span class="keyword">public static</span> Banc getInstance(String nom) {
+        <span class="keyword">if</span> (instancia == <span class="keyword">null</span>) {
+            instancia = <span class="keyword">new</span> Banc(nom);
+        }
+        <span class="keyword">return</span> instancia;
+    }
+}</pre>
+
+<h3>Exemple: Strategy per a càlcul d'interessos</h3>
+<pre><span class="keyword">public interface</span> <span class="type">EstrategiaInteres</span> {
+    <span class="keyword">double</span> calcularInteres(<span class="keyword">double</span> saldo, <span class="keyword">double</span> interes, <span class="keyword">int</span> mesos);
+}
+
+<span class="keyword">public class</span> <span class="type">InteresSimple</span> <span class="keyword">implements</span> EstrategiaInteres {
+    <span class="keyword">public double</span> calcularInteres(<span class="keyword">double</span> saldo, <span class="keyword">double</span> interes, <span class="keyword">int</span> mesos) {
+        <span class="keyword">return</span> saldo * (interes / 100) * (mesos / 12.0);
+    }
+}</pre>
+
+<div class="page-break"></div>
+<h1>6. Documentació JavaDoc</h1>
+<p>S'ha generat la documentació JavaDoc completa en format HTML amb la comanda:</p>
+<pre style="background:#1b5e20;color:#fff">$ javadoc -d documentacio -sourcepath src -subpackages model \
+    -encoding UTF-8 -charset UTF-8 -author -version -private
+<span style="color:#a5d6a7">✓ Documentació generada a documentacio/index.html</span></pre>
+
+<p>Cada classe i mètode públic inclou:</p>
+<ul>
+<li><code>@author</code> - Nom de l'autor</li>
+<li><code>@version</code> - Versió 1.0</li>
+<li><code>@param</code> - Descripció de cada paràmetre</li>
+<li><code>@return</code> - Descripció del valor de retorn</li>
+<li><code>@see</code> - Referències a classes relacionades</li>
+</ul>
+
+<h2>6.1 Exemple de JavaDoc complet (Classe Compte)</h2>
+<pre><span class="comment">/**
+ * Classe abstracta que representa un compte bancari genèric
+ * dins el sistema de gestió bancària.
+ * &lt;p&gt;
+ * {@code Compte} és un {@link Producte} bancari que modela
+ * els atributs i operacions comuns a tots els tipus de comptes.
+ * &lt;/p&gt;
+ *
+ * @author Alumne
+ * @version 1.0
+ * @see Producte
+ * @see CompteCorrent
+ * @see CompteTermini
+ * @see Client
+ */</span>
+<span class="keyword">public abstract class</span> <span class="type">Compte</span> <span class="keyword">extends</span> <span class="type">Producte</span> {
+
+    <span class="comment">/**
+     * Realitza un ingrés al compte, augmentant el saldo.
+     * @param quantitat la quantitat a ingressar (positiva)
+     */</span>
+    <span class="keyword">public void</span> ingressar(<span class="keyword">double</span> quantitat) { }
+
+    <span class="comment">/**
+     * Consulta i retorna el saldo actual del compte.
+     * @return el saldo actual del compte en euros
+     */</span>
+    <span class="keyword">public double</span> consultarSaldo() {
+        <span class="keyword">return this</span>.saldo;
+    }
+}</pre>
+
+<p><em>La documentació completa en HTML es pot consultar obrint el fitxer <code>documentacio/index.html</code> al navegador.</em></p>
+
+<div class="page-break"></div>
+<h1>7. Estructura del Projecte</h1>
+<pre style="background:#37474f;color:#b0bec5">
+gestio-bancaria/
+├── src/
+│   └── model/
+│       ├── Persona.java          ← Classe abstracta (superclasse)
+│       ├── Client.java           ← Hereta de Persona
+│       ├── Empleat.java          ← Hereta de Persona
+│       ├── Sucursal.java         ← Oficina bancària
+│       ├── Producte.java         ← Classe abstracta (productes)
+│       ├── Compte.java           ← Abstracta (hereta de Producte)
+│       ├── CompteCorrent.java    ← Hereta de Compte
+│       ├── CompteTermini.java    ← Hereta de Compte
+│       ├── TargetaCredit.java    ← Associada a CompteCorrent
+│       ├── FonsInversio.java     ← Hereta de Producte
+│       ├── CarteraValors.java    ← Hereta de Producte
+│       ├── Valor.java            ← Composició amb CarteraValors
+│       └── Banc.java             ← Entitat arrel
+├── diagrames/
+│   ├── diagrama-classes.puml     ← 5 diagrames UML
+│   ├── casos-us.puml
+│   ├── sequencia.puml
+│   ├── comunicacio.puml
+│   └── activitat.puml
+├── documentacio/                 ← JavaDoc HTML generat
+├── docs-practica/
+│   ├── analisi-gramatical.md
+│   ├── justificacio-classes.md
+│   └── patrons-disseny.md
+├── README.md
+└── generar-javadoc.sh
+</pre>
+
+<h1>8. Conclusions</h1>
+<ul>
+<li>S'han identificat <strong>13 classes</strong> mitjançant l'anàlisi gramatical (mètode Booch).</li>
+<li>S'han justificat totes les <strong>relacions</strong>: 3 herències, 5 agregacions, 1 composició i 1 associació.</li>
+<li>S'han implementat totes les classes en <strong>Java</strong> amb atributs, constructors, getters/setters i mètodes específics.</li>
+<li>S'ha generat <strong>JavaDoc complet</strong> amb @author, @version, @param, @return i @see.</li>
+<li>S'han creat <strong>5 diagrames UML</strong> en PlantUML: classes, casos d'ús, seqüència, comunicació i activitat.</li>
+<li>S'han analitzat els <strong>patrons de disseny</strong> i la seva aplicabilitat al projecte.</li>
+</ul>
+
+</body>
+</html>

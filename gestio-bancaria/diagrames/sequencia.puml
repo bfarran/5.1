@@ -1,0 +1,73 @@
+@startuml Diagrama de Seqüència - Obrir Compte Corrent amb Targeta
+
+skinparam sequenceMessageAlign center
+skinparam sequenceArrowThickness 2
+skinparam sequenceParticipantBackgroundColor #E8EAF6
+skinparam sequenceParticipantBorderColor #3F51B5
+skinparam sequenceArrowColor #3F51B5
+skinparam sequenceLifeLineBorderColor #7986CB
+
+title Diagrama de Seqüència: Obrir un compte corrent amb targeta de crèdit
+
+actor "Empleat" as emp
+participant "Banc" as banc
+participant "Sucursal" as suc
+participant "Client" as cli
+participant "CompteCorrent" as cc
+participant "TargetaCredit" as tc
+
+' ============================
+' FLUX PRINCIPAL
+' ============================
+
+emp -> banc : cercarClient(dni)
+activate banc
+banc -> banc : buscar a la llista de clients
+banc --> emp : client trobat / null
+deactivate banc
+
+alt Client no existeix
+    emp -> cli ** : new Client(dni, nom, adreca, telefon)
+    emp -> banc : afegirClient(client)
+    activate banc
+    banc -> banc : clients.add(client)
+    banc --> emp : client afegit
+    deactivate banc
+end
+
+emp -> cc ** : new CompteCorrent(numero, data, saldo, interes)
+note right of cc : Es crea el compte corrent\namb les dades proporcionades
+
+emp -> cc : afegirClient(client)
+activate cc
+cc -> cc : clients.add(client)
+cc --> emp : client associat al compte
+deactivate cc
+
+emp -> cli : afegirCompte(compteCorrent)
+activate cli
+cli -> cli : comptes.add(compte)
+cli --> emp : compte associat al client
+deactivate cli
+
+emp -> tc ** : new TargetaCredit(tipus, numero, titular, dataCaducitat)
+note right of tc : Es crea la targeta\nVisa/MasterCard...
+
+emp -> cc : afegirTargeta(targeta)
+activate cc
+cc -> cc : targetes.add(targeta)
+cc --> emp : targeta associada al compte
+deactivate cc
+
+emp -> suc : verificar operació
+activate suc
+suc --> emp : operació completada correctament
+deactivate suc
+
+note over emp, tc
+    ✓ Resultat: S'ha creat un compte corrent
+    amb una targeta de crèdit associada
+    per al client indicat.
+end note
+
+@enduml

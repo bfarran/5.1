@@ -1,0 +1,61 @@
+@startuml Diagrama de Comunicació - Obrir Compte Corrent amb Targeta
+
+skinparam objectBackgroundColor #E8EAF6
+skinparam objectBorderColor #3F51B5
+skinparam arrowColor #3F51B5
+
+title Diagrama de Comunicació: Obrir un compte corrent amb targeta de crèdit
+
+' ============================
+' PARTICIPANTS (OBJECTES)
+' ============================
+
+object ":Empleat" as emp
+object ":Banc" as banc
+object ":Sucursal" as suc
+object ":Client" as cli
+object ":CompteCorrent" as cc
+object ":TargetaCredit" as tc
+
+' ============================
+' DISPOSICIÓ
+' ============================
+
+emp -- banc
+emp -- cli
+emp -- cc
+emp -- tc
+emp -- suc
+banc -- cli
+cc -- cli
+cc -- tc
+
+' ============================
+' MISSATGES NUMERATS
+' ============================
+
+emp --> banc : 1: cercarClient(dni)
+banc --> emp : 1.1: retorna client o null
+
+emp --> cli : 2: new Client(dni, nom, adreca, telefon) [si no existeix]
+emp --> banc : 2.1: afegirClient(client) [si no existeix]
+
+emp --> cc : 3: new CompteCorrent(numero, data, saldo, interes)
+emp --> cc : 4: afegirClient(client)
+cc --> cli : 4.1: associar client al compte
+
+emp --> cli : 5: afegirCompte(compteCorrent)
+
+emp --> tc : 6: new TargetaCredit(tipus, numero, titular, dataCaducitat)
+emp --> cc : 7: afegirTargeta(targeta)
+
+emp --> suc : 8: verificar operació
+suc --> emp : 8.1: operació completada
+
+note bottom of cc
+    El compte corrent queda creat
+    amb el client com a titular
+    i la targeta de crèdit associada.
+end note
+
+@enduml

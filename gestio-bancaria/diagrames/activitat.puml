@@ -1,0 +1,66 @@
+@startuml Diagrama d'Activitat - Transferència entre Comptes
+
+skinparam activityBackgroundColor #E8EAF6
+skinparam activityBorderColor #3F51B5
+skinparam activityDiamondBackgroundColor #C5CAE9
+skinparam activityDiamondBorderColor #3F51B5
+skinparam arrowColor #3F51B5
+
+title Diagrama d'Activitat: Realitzar transferència entre comptes
+
+start
+
+:Empleat/Client sol·licita transferència;
+
+:Introduir compte origen;
+
+:Introduir compte destí;
+
+:Introduir import a transferir;
+
+:Validar compte origen;
+
+if (Compte origen existeix?) then (sí)
+else (no)
+    :Mostrar error:\n"Compte origen no trobat";
+    stop
+endif
+
+:Validar compte destí;
+
+if (Compte destí existeix?) then (sí)
+else (no)
+    :Mostrar error:\n"Compte destí no trobat";
+    stop
+endif
+
+:Consultar saldo del compte origen;
+
+if (Saldo suficient?) then (sí)
+    :Retirar import del compte origen\n(compteOrigen.retirar(import));
+
+    :Ingressar import al compte destí\n(compteDesti.ingressar(import));
+
+    :Registrar la transferència;
+
+    :Mostrar confirmació:\n"Transferència realitzada correctament";
+
+    :Mostrar nou saldo del compte origen;
+
+else (no)
+    :Mostrar error:\n"Saldo insuficient al compte origen";
+
+    :Mostrar saldo disponible;
+
+    if (Vol modificar l'import?) then (sí)
+        :Introduir nou import;
+        backward:Consultar saldo del compte origen;
+    else (no)
+        :Cancel·lar operació;
+        stop
+    endif
+endif
+
+stop
+
+@enduml

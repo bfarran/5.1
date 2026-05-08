@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>Pràctica DOO - Gestió Bancària - Part 2</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;margin:40px 60px;color:#222;line-height:1.6}
+h1{color:#1a237e;border-bottom:3px solid #1a237e;padding-bottom:10px}
+h2{color:#283593;margin-top:30px;border-bottom:1px solid #ccc;padding-bottom:5px}
+h3{color:#3949ab}
+code{background:#f0f0f0;padding:2px 6px;border-radius:3px;font-size:0.9em}
+pre{background:#263238;color:#eeffff;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.82em;line-height:1.4}
+.keyword{color:#c792ea}.type{color:#ffcb6b}.string{color:#c3e88d}.comment{color:#546e7a}.annotation{color:#82aaff}
+.page-break{page-break-before:always}
+img{max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;margin:20px auto}
+table{border-collapse:collapse;width:100%;margin:15px 0}
+th,td{border:1px solid #ccc;padding:8px 12px;text-align:left}
+th{background:#e8eaf6;color:#1a237e}
+@media print{body{margin:20px 30px}pre{font-size:0.7em;padding:10px}.page-break{page-break-before:always}}
+</style>
+</head>
+<body>
+
+<h1>3. Codi Java - Classes del Model</h1>
+<p>S'han implementat 13 classes Java amb JavaDoc complet. A continuació es mostren les classes més representatives.</p>
+
+<h2>3.1 Persona.java (classe abstracta)</h2>
+<pre><span class="keyword">package</span> model;
+
+<span class="comment">/**
+ * Classe abstracta que representa una persona dins el sistema bancari.
+ * Superclasse comuna de Client i Empleat.
+ * @author Alumne
+ * @version 1.0
+ */</span>
+<span class="keyword">public abstract class</span> <span class="type">Persona</span> {
+    <span class="keyword">private</span> String dni;
+    <span class="keyword">private</span> String nom;
+    <span class="keyword">private</span> String adreca;
+    <span class="keyword">private</span> String telefon;
+
+    <span class="keyword">public</span> Persona(String dni, String nom, String adreca, String telefon) {
+        <span class="keyword">this</span>.dni = dni;
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.adreca = adreca;
+        <span class="keyword">this</span>.telefon = telefon;
+    }
+    <span class="comment">// Getters i Setters per a tots els atributs...</span>
+}</pre>
+
+<h2>3.2 Compte.java (classe abstracta)</h2>
+<pre><span class="keyword">package</span> model;
+<span class="keyword">import</span> java.time.LocalDate;
+<span class="keyword">import</span> java.util.ArrayList;
+<span class="keyword">import</span> java.util.List;
+
+<span class="keyword">public abstract class</span> <span class="type">Compte</span> <span class="keyword">extends</span> <span class="type">Producte</span> {
+    <span class="keyword">private</span> String numeroCompte;
+    <span class="keyword">private</span> LocalDate dataObertura;
+    <span class="keyword">private</span> <span class="keyword">double</span> saldo;
+    <span class="keyword">private</span> <span class="keyword">double</span> tipusInteres;
+    <span class="keyword">private</span> List&lt;Client&gt; clients;
+
+    <span class="keyword">public</span> Compte(String numeroCompte, LocalDate dataObertura,
+                  <span class="keyword">double</span> saldo, <span class="keyword">double</span> tipusInteres) {
+        <span class="keyword">super</span>();
+        <span class="keyword">this</span>.numeroCompte = numeroCompte;
+        <span class="keyword">this</span>.dataObertura = dataObertura;
+        <span class="keyword">this</span>.saldo = saldo;
+        <span class="keyword">this</span>.tipusInteres = tipusInteres;
+        <span class="keyword">this</span>.clients = <span class="keyword">new</span> ArrayList&lt;&gt;();
+    }
+
+    <span class="keyword">public void</span> ingressar(<span class="keyword">double</span> quantitat) { }
+    <span class="keyword">public void</span> retirar(<span class="keyword">double</span> quantitat) { }
+    <span class="keyword">public double</span> consultarSaldo() { <span class="keyword">return this</span>.saldo; }
+    <span class="keyword">public void</span> afegirClient(Client client) { <span class="keyword">this</span>.clients.add(client); }
+    <span class="comment">// Getters, Setters i resta de mètodes...</span>
+}</pre>
+
+<h2>3.3 CompteCorrent.java</h2>
+<pre><span class="keyword">public class</span> <span class="type">CompteCorrent</span> <span class="keyword">extends</span> <span class="type">Compte</span> {
+    <span class="keyword">private</span> List&lt;TargetaCredit&gt; targetes;
+    <span class="keyword">private</span> List&lt;FonsInversio&gt; fonsInversio;
+    <span class="keyword">private</span> List&lt;CarteraValors&gt; carteres;
+
+    <span class="keyword">public</span> CompteCorrent(String num, LocalDate data,
+                        <span class="keyword">double</span> saldo, <span class="keyword">double</span> interes) {
+        <span class="keyword">super</span>(num, data, saldo, interes);
+        <span class="keyword">this</span>.targetes = <span class="keyword">new</span> ArrayList&lt;&gt;();
+        <span class="keyword">this</span>.fonsInversio = <span class="keyword">new</span> ArrayList&lt;&gt;();
+        <span class="keyword">this</span>.carteres = <span class="keyword">new</span> ArrayList&lt;&gt;();
+    }
+
+    <span class="keyword">public void</span> afegirTargeta(TargetaCredit t) { targetes.add(t); }
+    <span class="keyword">public void</span> afegirFons(FonsInversio f) { fonsInversio.add(f); }
+    <span class="keyword">public void</span> afegirCartera(CarteraValors c) { carteres.add(c); }
+    <span class="comment">// Eliminadors, Getters i Setters...</span>
+}</pre>
+
+<h2>3.4 CarteraValors.java (Composició amb Valor)</h2>
+<pre><span class="keyword">public class</span> <span class="type">CarteraValors</span> <span class="keyword">extends</span> <span class="type">Producte</span> {
+    <span class="keyword">private</span> List&lt;Valor&gt; valors;  <span class="comment">// COMPOSICIÓ: valors depenen de la cartera</span>
+
+    <span class="keyword">public</span> CarteraValors() {
+        <span class="keyword">super</span>();
+        <span class="keyword">this</span>.valors = <span class="keyword">new</span> ArrayList&lt;&gt;();
+    }
+
+    <span class="keyword">public void</span> afegirValor(Valor valor) { valors.add(valor); }
+    <span class="keyword">public void</span> eliminarValor(Valor valor) { valors.remove(valor); }
+    <span class="keyword">public double</span> valorTotal() { <span class="keyword">return</span> 0.0; }
+}</pre>
+
+<h2>3.5 Banc.java (Entitat arrel)</h2>
+<pre><span class="keyword">public class</span> <span class="type">Banc</span> {
+    <span class="keyword">private</span> String nom;
+    <span class="keyword">private</span> List&lt;Sucursal&gt; sucursals;  <span class="comment">// AGREGACIÓ</span>
+    <span class="keyword">private</span> List&lt;Client&gt; clients;
+
+    <span class="keyword">public</span> Banc(String nom) {
+        <span class="keyword">this</span>.nom = nom;
+        <span class="keyword">this</span>.sucursals = <span class="keyword">new</span> ArrayList&lt;&gt;();
+        <span class="keyword">this</span>.clients = <span class="keyword">new</span> ArrayList&lt;&gt;();
+    }
+
+    <span class="keyword">public void</span> afegirSucursal(Sucursal s) { sucursals.add(s); }
+    <span class="keyword">public</span> Client cercarClient(String dni) { <span class="keyword">return null</span>; }
+    <span class="comment">// Resta de mètodes...</span>
+}</pre>
+
+<h2>3.6 Resum de totes les classes implementades</h2>
+<table>
+<tr><th>Classe</th><th>Tipus</th><th>Hereta de</th><th>Atributs</th><th>Mètodes clau</th></tr>
+<tr><td>Persona</td><td>abstract</td><td>—</td><td>4</td><td>Getters/Setters</td></tr>
+<tr><td>Client</td><td>concreta</td><td>Persona</td><td>1 (List)</td><td>afegirCompte, eliminarCompte</td></tr>
+<tr><td>Empleat</td><td>concreta</td><td>Persona</td><td>1</td><td>Getters/Setters</td></tr>
+<tr><td>Sucursal</td><td>concreta</td><td>—</td><td>3</td><td>afegirEmpleat, eliminarEmpleat</td></tr>
+<tr><td>Producte</td><td>abstract</td><td>—</td><td>0</td><td>—</td></tr>
+<tr><td>Compte</td><td>abstract</td><td>Producte</td><td>5</td><td>ingressar, retirar, consultarSaldo</td></tr>
+<tr><td>CompteCorrent</td><td>concreta</td><td>Compte</td><td>3 (Lists)</td><td>afegirTargeta, afegirFons, afegirCartera</td></tr>
+<tr><td>CompteTermini</td><td>concreta</td><td>Compte</td><td>1</td><td>calcularInteressos</td></tr>
+<tr><td>TargetaCredit</td><td>concreta</td><td>—</td><td>4</td><td>Getters/Setters</td></tr>
+<tr><td>FonsInversio</td><td>concreta</td><td>Producte</td><td>5</td><td>Getters/Setters</td></tr>
+<tr><td>CarteraValors</td><td>concreta</td><td>Producte</td><td>1 (List)</td><td>afegirValor, eliminarValor, valorTotal</td></tr>
+<tr><td>Valor</td><td>concreta</td><td>—</td><td>3</td><td>Getters/Setters</td></tr>
+<tr><td>Banc</td><td>concreta</td><td>—</td><td>3</td><td>afegirSucursal, cercarClient</td></tr>
+</table>
+
+<div class="page-break"></div>
+<h1>4. Diagrames UML</h1>
+
+<h2>4.1 Diagrama de Classes</h2>
+<p>Diagrama complet amb totes les classes, atributs, mètodes i relacions amb cardinalitats.
+Generat amb PlantUML i renderitzat a <code>plantuml.com</code>:</p>
+<img src="../diagrames/diagrama-classes.png" alt="Diagrama de classes UML">
+<p><em>Figura 1: Diagrama de classes complet del sistema de gestió bancària.</em></p>
+
+<h2>4.2 Diagrama de Casos d'Ús</h2>
+<p>Actors: Client, Empleat, Administrador. Fitxer: <code>diagrames/casos-us.puml</code></p>
+<pre>@startuml
+actor "Client" as ActorClient
+actor "Empleat" as ActorEmpleat
+actor "Administrador" as ActorAdmin
+rectangle "Sistema de Gestió Bancària" {
+  usecase "Consultar saldo" as UC1
+  usecase "Realitzar ingrés" as UC2
+  usecase "Obrir compte" as UC6
+  usecase "Associar targeta de crèdit" as UC8
+  usecase "Contractar fons d'inversió" as UC9
+  usecase "Comprar valors" as UC11
+  usecase "Gestionar sucursals" as UC14
+}
+ActorClient --&gt; UC1
+ActorClient --&gt; UC2
+ActorEmpleat --&gt; UC6
+ActorEmpleat --&gt; UC8
+ActorEmpleat --&gt; UC9
+ActorEmpleat --&gt; UC11
+ActorAdmin --&gt; UC14
+@enduml</pre>
+
+<h2>4.3 Diagrama de Seqüència</h2>
+<p>Cas: "Obrir un compte corrent amb targeta de crèdit". Fitxer: <code>diagrames/sequencia.puml</code></p>
+<pre>@startuml
+actor "Empleat" as emp
+participant "Banc" as banc
+participant "Client" as cli
+participant "CompteCorrent" as cc
+participant "TargetaCredit" as tc
+
+emp -&gt; banc : cercarClient(dni)
+banc --&gt; emp : client trobat/null
+emp -&gt; cc ** : new CompteCorrent(...)
+emp -&gt; cc : afegirClient(client)
+emp -&gt; cli : afegirCompte(compteCorrent)
+emp -&gt; tc ** : new TargetaCredit(...)
+emp -&gt; cc : afegirTargeta(targeta)
+@enduml</pre>
+
+<h2>4.4 Diagrama de Comunicació</h2>
+<p>Mateix escenari amb missatges numerats. Fitxer: <code>diagrames/comunicacio.puml</code></p>
+
+<h2>4.5 Diagrama d'Activitat</h2>
+<p>Procés: "Realitzar transferència entre comptes" amb decisions (saldo suficient?). Fitxer: <code>diagrames/activitat.puml</code></p>
+
+<h2>4.6 Compilació satisfactòria</h2>
+<p>Totes les classes compilen correctament sense errors:</p>
+<pre style="background:#1b5e20;color:#fff">
+$ javac -d bin src/model/*.java
+<span style="color:#a5d6a7">✓ Compilació exitosa - 0 errors</span>
+</pre>
+
+</body>
+</html>

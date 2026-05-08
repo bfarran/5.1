@@ -1,0 +1,83 @@
+@startuml Diagrama de Casos d'Ús - Gestió Bancària
+
+skinparam actorStyle awesome
+skinparam usecaseFontSize 12
+skinparam usecaseBackgroundColor #E8EAF6
+skinparam usecaseBorderColor #3F51B5
+skinparam arrowColor #3F51B5
+
+title Diagrama de Casos d'Ús - Aplicació de Gestió Bancària
+
+' ============================
+' ACTORS
+' ============================
+
+actor "Client" as ActorClient
+actor "Empleat" as ActorEmpleat
+actor "Administrador" as ActorAdmin
+
+' ============================
+' SISTEMA
+' ============================
+
+rectangle "Sistema de Gestió Bancària" {
+
+    ' --- Casos d'ús del Client ---
+    usecase "Consultar saldo" as UC1
+    usecase "Realitzar ingrés" as UC2
+    usecase "Realitzar retirada" as UC3
+    usecase "Consultar moviments" as UC4
+    usecase "Consultar productes" as UC5
+
+    ' --- Casos d'ús de l'Empleat ---
+    usecase "Obrir compte" as UC6
+    usecase "Tancar compte" as UC7
+    usecase "Associar targeta\nde crèdit" as UC8
+    usecase "Contractar fons\nd'inversió" as UC9
+    usecase "Crear cartera\nde valors" as UC10
+    usecase "Comprar valors" as UC11
+    usecase "Vendre valors" as UC12
+    usecase "Donar d'alta client" as UC13
+
+    ' --- Casos d'ús de l'Administrador ---
+    usecase "Gestionar sucursals" as UC14
+    usecase "Gestionar empleats" as UC15
+    usecase "Generar informes" as UC16
+    usecase "Cercar client" as UC17
+}
+
+' ============================
+' RELACIONS ACTOR - CAS D'ÚS
+' ============================
+
+ActorClient --> UC1
+ActorClient --> UC2
+ActorClient --> UC3
+ActorClient --> UC4
+ActorClient --> UC5
+
+ActorEmpleat --> UC6
+ActorEmpleat --> UC7
+ActorEmpleat --> UC8
+ActorEmpleat --> UC9
+ActorEmpleat --> UC10
+ActorEmpleat --> UC11
+ActorEmpleat --> UC12
+ActorEmpleat --> UC13
+ActorEmpleat --> UC17
+
+ActorAdmin --> UC14
+ActorAdmin --> UC15
+ActorAdmin --> UC16
+ActorAdmin --> UC17
+
+' ============================
+' RELACIONS ENTRE CASOS D'ÚS
+' ============================
+
+UC6 ..> UC13 : <<include>>
+UC8 ..> UC6 : <<extend>>
+UC11 ..> UC10 : <<include>>
+UC12 ..> UC10 : <<include>>
+
+@enduml

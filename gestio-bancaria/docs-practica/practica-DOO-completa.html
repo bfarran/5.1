@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+<meta charset="UTF-8">
+<title>Pràctica DOO - Gestió Bancària</title>
+<style>
+body{font-family:'Segoe UI',Arial,sans-serif;margin:40px 60px;color:#222;line-height:1.6;font-size:14px}
+h1{color:#1a237e;border-bottom:3px solid #1a237e;padding-bottom:10px;font-size:1.8em}
+h2{color:#283593;margin-top:30px;border-bottom:1px solid #ccc;padding-bottom:5px;font-size:1.4em}
+h3{color:#3949ab;font-size:1.15em}
+table{border-collapse:collapse;width:100%;margin:15px 0}
+th,td{border:1px solid #ccc;padding:8px 12px;text-align:left;font-size:0.92em}
+th{background:#e8eaf6;color:#1a237e}
+tr:nth-child(even){background:#f5f5f5}
+code{background:#f0f0f0;padding:2px 6px;border-radius:3px;font-size:0.9em}
+pre{background:#263238;color:#eeffff;padding:15px;border-radius:8px;overflow-x:auto;font-size:0.82em;line-height:1.4}
+.cover{text-align:center;padding:80px 0;page-break-after:always}
+.cover h1{font-size:2.5em;border:none;color:#1a237e}
+.cover p{font-size:1.2em;color:#555}
+.page-break{page-break-before:always}
+img{max-width:100%;border:1px solid #ddd;border-radius:4px;display:block;margin:10px 0}
+.caption{text-align:center;font-style:italic;color:#666;margin-bottom:20px;font-size:0.9em}
+.keyword{color:#c792ea}.type{color:#ffcb6b}.comment{color:#546e7a}
+@media print{body{margin:20px 30px;font-size:12px}pre{font-size:0.7em;padding:10px}img{max-width:100%}.cover{padding:60px 0}}
+</style>
+</head>
+<body>
+
+<!-- ========== PORTADA ========== -->
+<div class="cover">
+<h1>🏦 Aplicació de Gestió Bancària</h1>
+<p><strong>Pràctica de Disseny Orientat a Objectes (DOO)</strong></p>
+<p>Mòdul 5 - Entorns de Desenvolupament</p>
+<p>Curs 2025-2026</p>
+<p style="margin-top:40px"><strong>Autor:</strong> Alumne</p>
+<p><strong>Data:</strong> Maig 2026</p>
+</div>
+
+<!-- ========== ÍNDEX ========== -->
+<h1>Índex</h1>
+<ol>
+<li>Anàlisi gramatical (Mètode Booch)</li>
+<li>Justificació de classes i relacions</li>
+<li>Codi Java amb JavaDoc</li>
+<li>Diagrames UML</li>
+<li>Documentació JavaDoc generada</li>
+<li>Patrons de disseny</li>
+<li>Estructura del projecte i conclusions</li>
+</ol>
+
+<!-- ========== 1. ANÀLISI GRAMATICAL ========== -->
+<div class="page-break"></div>
+<h1>1. Anàlisi Gramatical - Mètode Booch</h1>
+
+<h2>1.1 Classificació de paraules clau</h2>
+<ul>
+<li><strong>Noms comuns → Classes:</strong> Banc, Client, Compte, Sucursal, Producte, Empleat...</li>
+<li><strong>Verbs d'acció → Mètodes:</strong> gestionar, ingressar, retirar, consultar...</li>
+<li><strong>Verbs d'existència → Herència:</strong> "hi ha dos tipus de comptes"</li>
+<li><strong>Verbs de possessió → Composició/Agregació:</strong> "tenen", "poden tenir", "estan compostes"</li>
+<li><strong>Adjectius → Atributs:</strong> DNI, nom, saldo, número, tipus...</li>
+</ul>
+
+<h2>1.2 Classes candidates</h2>
+<table>
+<tr><th>#</th><th>Classe</th><th>Tipus</th><th>Justificació</th></tr>
+<tr><td>1</td><td><code>Persona</code></td><td>Abstracta</td><td>Agrupa atributs comuns de Client i Empleat</td></tr>
+<tr><td>2</td><td><code>Client</code></td><td>Concreta</td><td>Persona que contracta productes bancaris</td></tr>
+<tr><td>3</td><td><code>Empleat</code></td><td>Concreta</td><td>Persona que treballa en una sucursal</td></tr>
+<tr><td>4</td><td><code>Sucursal</code></td><td>Concreta</td><td>Oficina bancària amb empleats</td></tr>
+<tr><td>5</td><td><code>Producte</code></td><td>Abstracta</td><td>Generalització de productes bancaris</td></tr>
+<tr><td>6</td><td><code>Compte</code></td><td>Abstracta</td><td>Producte amb saldo i operacions</td></tr>
+<tr><td>7</td><td><code>CompteCorrent</code></td><td>Concreta</td><td>Compte amb targetes i productes</td></tr>
+<tr><td>8</td><td><code>CompteTermini</code></td><td>Concreta</td><td>Compte amb durada en mesos</td></tr>
+<tr><td>9</td><td><code>TargetaCredit</code></td><td>Concreta</td><td>Targeta associada a comptes corrents</td></tr>
+<tr><td>10</td><td><code>FonsInversio</code></td><td>Concreta</td><td>Producte d'inversió amb rendibilitat</td></tr>
+<tr><td>11</td><td><code>CarteraValors</code></td><td>Concreta</td><td>Producte compost per valors borsaris</td></tr>
+<tr><td>12</td><td><code>Valor</code></td><td>Concreta</td><td>Títol borsari dins una cartera</td></tr>
+<tr><td>13</td><td><code>Banc</code></td><td>Concreta</td><td>Entitat principal del sistema</td></tr>
+</table>
+
+<h2>1.3 Atributs per classe</h2>
+<table>
+<tr><th>Classe</th><th>Atributs</th></tr>
+<tr><td>Persona</td><td>dni, nom, adreca, telefon</td></tr>
+<tr><td>Client</td><td><em>(hereta Persona)</em> + comptes: List&lt;Compte&gt;</td></tr>
+<tr><td>Empleat</td><td><em>(hereta Persona)</em> + sucursal: Sucursal</td></tr>
+<tr><td>Sucursal</td><td>identificador, adreca, empleats: List&lt;Empleat&gt;</td></tr>
+<tr><td>Compte</td><td>numeroCompte, dataObertura, saldo, tipusInteres, clients</td></tr>
+<tr><td>CompteCorrent</td><td><em>(hereta Compte)</em> + targetes, fonsInversio, carteres</td></tr>
+<tr><td>CompteTermini</td><td><em>(hereta Compte)</em> + nombreMesos: int</td></tr>
+<tr><td>TargetaCredit</td><td>tipus, numero, titular, dataCaducitat</td></tr>
+<tr><td>FonsInversio</td><td>nom, importFons, rendibilitat, dataObertura, dataVenciment</td></tr>
+<tr><td>CarteraValors</td><td>valors: List&lt;Valor&gt;</td></tr>
+<tr><td>Valor</td><td>nom, nombreTitols, preuCotitzacio</td></tr>
+<tr><td>Banc</td><td>nom, sucursals, clients</td></tr>
+</table>
+
+<!-- ========== 2. JUSTIFICACIÓ ========== -->
+<div class="page-break"></div>
+<h1>2. Justificació de Classes i Relacions</h1>
+
+<h2>2.1 Relacions d'Herència</h2>
+<table>
+<tr><th>Relació</th><th>Justificació</th></tr>
+<tr><td>Persona → Client, Empleat</td><td>Comparteixen DNI, nom, adreça, telèfon. Principi DRY.</td></tr>
+<tr><td>Producte → Compte, FonsInversio, CarteraValors</td><td>"Productes associats als clients" - generalització.</td></tr>
+<tr><td>Compte → CompteCorrent, CompteTermini</td><td>"Hi ha dos tipus de comptes" - especialització.</td></tr>
+</table>
+
+<h2>2.2 Relacions d'Agregació</h2>
+<table>
+<tr><th>Relació</th><th>Cardinalitat</th><th>Justificació</th></tr>
+<tr><td>Banc ◇— Sucursal</td><td>1 a 1..*</td><td>Sucursals existeixen independentment del banc.</td></tr>
+<tr><td>Sucursal ◇— Empleat</td><td>1 a 1..*</td><td>L'empleat pot ser traslladat.</td></tr>
+<tr><td>CompteCorrent ◇— TargetaCredit</td><td>1 a 0..*</td><td>La targeta és independent del compte.</td></tr>
+<tr><td>CompteCorrent ◇— FonsInversio</td><td>1 a 0..*</td><td>Producte independent associat.</td></tr>
+<tr><td>CompteCorrent ◇— CarteraValors</td><td>1 a 0..*</td><td>Producte independent associat.</td></tr>
+</table>
+
+<h2>2.3 Composició</h2>
+<table>
+<tr><th>Relació</th><th>Cardinalitat</th><th>Justificació</th></tr>
+<tr><td>CarteraValors ◆— Valor</td><td>1 a 1..*</td><td>"Estan <strong>compostes</strong> per valors" - cicle de vida dependent.</td></tr>
+</table>
+
+<h2>2.4 Associació</h2>
+<table>
+<tr><th>Relació</th><th>Cardinalitat</th><th>Justificació</th></tr>
+<tr><td>Client — Compte</td><td>1..* a 1..*</td><td>Múltiples comptes per client i múltiples titulars per compte.</td></tr>
+</table>
+
+<h2>2.5 Relacions que NO apareixen</h2>
+<ul>
+<li><strong>Dependència:</strong> No hi ha ús puntual/temporal sense referència persistent.</li>
+<li><strong>Interfície:</strong> L'enunciat no requereix contractes abstractes entre jerarquies.</li>
+</ul>
+
+<!-- ========== 3. CODI JAVA ========== -->
+<div class="page-break"></div>
+<h1>3. Codi Java - Classes del Model</h1>
+<p>S'han implementat 13 classes Java amb JavaDoc complet. A continuació es mostren captures del codi font.</p>
+
+<h2>3.1 Persona.java - Classe abstracta amb JavaDoc</h2>
+<img src="img/persona-javadoc.png" alt="Persona.java amb JavaDoc">
+<p class="caption">Figura 1: Classe abstracta Persona amb JavaDoc complet (@author, @version, @param, @see)</p>
+
+<h2>3.2 Compte.java - Classe abstracta amb atributs i JavaDoc</h2>
+<img src="img/compte-javadoc.png" alt="Compte.java declaració i JavaDoc">
+<p class="caption">Figura 2: Classe Compte amb JavaDoc, herència de Producte, atributs privats i constructor</p>
+
+<h2>3.3 Compte.java - Mètodes (ingressar, retirar, consultarSaldo)</h2>
+<img src="img/compte-metodes.png" alt="Compte.java mètodes">
+<p class="caption">Figura 3: Mètodes afegirClient, eliminarClient, ingressar, retirar i consultarSaldo amb JavaDoc</p>
+
+<h2>3.4 CompteCorrent.java - Herència i atributs</h2>
+<img src="img/comptecorrent-javadoc.png" alt="CompteCorrent.java declaració">
+<p class="caption">Figura 4: CompteCorrent heretant de Compte amb llistes de targetes, fons i carteres (agregació)</p>
+
+<h2>3.5 CompteCorrent.java - Mètodes d'agregació</h2>
+<img src="img/comptecorrent-metodes.png" alt="CompteCorrent.java mètodes">
+<p class="caption">Figura 5: Mètodes afegirTargeta, eliminarTargeta, afegirFons, eliminarFons amb JavaDoc</p>
+
+<h2>3.6 Banc.java - Entitat arrel del sistema</h2>
+<img src="img/banc-javadoc.png" alt="Banc.java">
+<p class="caption">Figura 6: Classe Banc amb llistes de sucursals i clients (agregació), mètodes afegirSucursal i cercarClient</p>
+
+<h2>3.7 Classe compilada - Compte (decompilat)</h2>
+<img src="img/compte-decompiled.png" alt="Compte compilat">
+<p class="caption">Figura 7: Classe Compte compilada i decompilada per IntelliJ (verificació de compilació correcta)</p>
+
+<h2>3.8 CompteCorrent compilat (decompilat)</h2>
+<img src="img/comptecorrent-decompiled.png" alt="CompteCorrent compilat">
+<p class="caption">Figura 8: Classe CompteCorrent compilada correctament amb tots els mètodes</p>
+
+<!-- ========== 4. DIAGRAMES ========== -->
+<div class="page-break"></div>
+<h1>4. Diagrames UML</h1>
+
+<h2>4.1 Diagrama de Classes</h2>
+<p>Diagrama complet amb totes les classes, atributs, mètodes i relacions. Generat amb PlantUML:</p>
+<img src="../diagrames/diagrama-classes.png" alt="Diagrama de classes UML">
+<p class="caption">Figura 9: Diagrama de classes UML complet del sistema de gestió bancària</p>
+
+<h2>4.2 Altres diagrames</h2>
+<p>S'han creat 4 diagrames addicionals en format PlantUML (.puml) a la carpeta <code>diagrames/</code>:</p>
+<table>
+<tr><th>Diagrama</th><th>Fitxer</th><th>Descripció</th></tr>
+<tr><td>Casos d'ús</td><td><code>casos-us.puml</code></td><td>Actors: Client, Empleat, Administrador amb 17 casos d'ús</td></tr>
+<tr><td>Seqüència</td><td><code>sequencia.puml</code></td><td>"Obrir compte corrent amb targeta de crèdit"</td></tr>
+<tr><td>Comunicació</td><td><code>comunicacio.puml</code></td><td>Mateix escenari amb missatges numerats</td></tr>
+<tr><td>Activitat</td><td><code>activitat.puml</code></td><td>"Realitzar transferència" amb decisió de saldo</td></tr>
+</table>
+
+<!-- ========== 5. JAVADOC ========== -->
+<div class="page-break"></div>
+<h1>5. Documentació JavaDoc Generada</h1>
+<p>S'ha generat la documentació JavaDoc en format HTML amb la comanda:</p>
+<pre>javadoc -d documentacio -sourcepath src -subpackages model -encoding UTF-8 -charset UTF-8 -author -version -private</pre>
+
+<h2>5.1 JavaDoc - Llista de totes les classes (Package model)</h2>
+<img src="img/javadoc-package.png" alt="JavaDoc package model">
+<p class="caption">Figura 10: Documentació JavaDoc generada - Llista de les 13 classes del paquet model</p>
+
+<h2>5.2 JavaDoc - Classe Compte (detall)</h2>
+<img src="img/javadoc-compte.png" alt="JavaDoc Compte">
+<p class="caption">Figura 11: JavaDoc de la classe Compte amb jerarquia, descripció, @author, @version, @see i Field Summary</p>
+
+<!-- ========== 6. PATRONS DE DISSENY ========== -->
+<div class="page-break"></div>
+<h1>6. Patrons de Disseny</h1>
+
+<h2>6.1 Definició i origen</h2>
+<p>Els <strong>patrons de disseny</strong> són solucions reutilitzables a problemes recurrents en el disseny de programari. Popularitzats pel <strong>Gang of Four (GoF)</strong> al llibre <em>"Design Patterns"</em> (1994), cataloguen 23 patrons en 3 categories: creacionals, estructurals i de comportament.</p>
+
+<h2>6.2 Avantatges i inconvenients</h2>
+<table>
+<tr><th>Avantatges</th><th>Inconvenients</th></tr>
+<tr><td>Reutilització de solucions provades</td><td>Complexitat afegida en projectes petits</td></tr>
+<tr><td>Millor mantenibilitat</td><td>Corba d'aprenentatge</td></tr>
+<tr><td>Comunicació eficient entre l'equip</td><td>Risc de sobreenginyeria</td></tr>
+</table>
+
+<h2>6.3 Patrons més usats</h2>
+<table>
+<tr><th>Patró</th><th>Categoria</th><th>Descripció</th><th>Exemple</th></tr>
+<tr><td>Singleton</td><td>Creacional</td><td>Una única instància global</td><td>Logger, pool de connexions</td></tr>
+<tr><td>Factory Method</td><td>Creacional</td><td>Delega creació a subclasses</td><td>Calendar.getInstance()</td></tr>
+<tr><td>Observer</td><td>Comportament</td><td>Notificació de canvis</td><td>Event listeners</td></tr>
+<tr><td>Strategy</td><td>Comportament</td><td>Algorismes intercanviables</td><td>Ordenació, impostos</td></tr>
+<tr><td>Decorator</td><td>Estructural</td><td>Funcionalitat dinàmica</td><td>BufferedInputStream</td></tr>
+<tr><td>MVC</td><td>Arquitectònic</td><td>Model-Vista-Controlador</td><td>Spring MVC</td></tr>
+</table>
+
+<h2>6.4 Aplicació al projecte bancari</h2>
+<table>
+<tr><th>Patró</th><th>On s'aplicaria</th><th>Benefici</th></tr>
+<tr><td>Singleton</td><td><code>Banc</code></td><td>Garantir una única instància</td></tr>
+<tr><td>Factory Method</td><td>Creació de <code>Producte</code></td><td>Centralitzar creació</td></tr>
+<tr><td>Strategy</td><td>Càlcul d'interessos</td><td>Intercanviar algorismes</td></tr>
+<tr><td>Observer</td><td>Moviments de <code>Compte</code></td><td>Notificacions automàtiques</td></tr>
+</table>
+
+<!-- ========== 7. ESTRUCTURA I CONCLUSIONS ========== -->
+<div class="page-break"></div>
+<h1>7. Estructura del Projecte i Conclusions</h1>
+<pre style="background:#37474f;color:#b0bec5">
+gestio-bancaria/
+├── src/model/          ← 13 classes Java amb JavaDoc
+├── diagrames/          ← 5 diagrames PlantUML (.puml)
+├── documentacio/       ← JavaDoc HTML generat
+├── docs-practica/      ← Documentació de la pràctica
+├── README.md           ← README professional
+└── generar-javadoc.sh  ← Script d'automatització
+</pre>
+
+<h2>Conclusions</h2>
+<ul>
+<li>S'han identificat <strong>13 classes</strong> mitjançant l'anàlisi gramatical (mètode Booch).</li>
+<li>S'han justificat totes les <strong>relacions</strong>: 3 herències, 5 agregacions, 1 composició i 1 associació.</li>
+<li>S'han implementat totes les classes en <strong>Java</strong> amb atributs, constructors, getters/setters i mètodes específics.</li>
+<li>S'ha generat <strong>JavaDoc complet</strong> amb @author, @version, @param, @return i @see.</li>
+<li>S'han creat <strong>5 diagrames UML</strong> en PlantUML.</li>
+<li>S'han analitzat els <strong>patrons de disseny</strong> i la seva aplicabilitat al projecte.</li>
+</ul>
+
+</body>
+</html>
